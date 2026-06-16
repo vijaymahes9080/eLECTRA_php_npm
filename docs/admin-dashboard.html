@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>eLECTRA - Admin Dashboard</title>
+
+    <!-- Styles -->
+    <link href="css/app.css" rel="stylesheet">
+    <link href="css/common.css" rel="stylesheet">
+    <style>
+        .current span {
+            font-weight: bold;
+            font-size: 18px;
+            color: #337ab7;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <nav class="navbar navbar-default navbar-static-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse" aria-expanded="false">
+                        <span class="sr-only">Toggle Navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="index.html">
+                        eLECTRA
+                    </a>
+                </div>
+
+                <div class="collapse navbar-collapse" id="app-navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="#" style="font-weight:bold; color:#d9534f;">Admin Session</a></li>
+                        <li><a href="index.html">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Admin Dashboard</div>
+
+                        <div class="panel-body">
+                            <div class="alert alert-success" id="success-alert" style="display: none;">
+                                <strong id="alert-title">Success!</strong> <span id="alert-message">Action processed successfully.</span>
+                            </div>
+
+                            <!-- Add New Bill Form -->
+                            <form class="form-horizontal" id="form-add-bill" onsubmit="return false;">
+                                <fieldset>
+                                    <legend>ADD NEW BILL</legend>
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label" for="customerId">Customer Id</label>  
+                                        <div class="col-md-6">
+                                            <input id="customerId" name="customerId" placeholder="10-digit number" class="form-control input-md" required type="text" pattern="\d{10}">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label" for="initial">Initial Reading</label>  
+                                        <div class="col-md-4">
+                                            <input id="initial" name="initial" placeholder="0" class="form-control input-md" required type="number" min="0">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label" for="final">Final Reading</label>  
+                                        <div class="col-md-4">
+                                            <input id="final" name="final" placeholder="0" class="form-control input-md" required type="number" min="0">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label" for="month">Month</label>
+                                        <div class="col-md-6">
+                                            <select id="month" name="month" class="form-control">
+                                                <option value="January">January</option>
+                                                <option value="February">February</option>
+                                                <option value="March">March</option>
+                                                <option value="April">April</option>
+                                                <option value="May">May</option>
+                                                <option value="June">June</option>
+                                                <option value="July">July</option>
+                                                <option value="August">August</option>
+                                                <option value="September">September</option>
+                                                <option value="October">October</option>
+                                                <option value="November">November</option>
+                                                <option value="December">December</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label" for="year">Year</label>
+                                        <div class="col-md-6">
+                                            <select id="year" name="year" class="form-control">
+                                                <option value="2026">2026</option>
+                                                <option value="2027">2027</option>
+                                                <option value="2028">2028</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-md-6 col-md-offset-4">
+                                            <button type="submit" class="btn btn-primary" id="btn-add-bill">Submit</button>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </form>
+
+                            <hr>
+
+                            <!-- Update Rate Form -->
+                            <form class="form-inline text-center" id="form-update-rate" onsubmit="return false;">
+                                <fieldset>
+                                    <legend>Update Rate</legend>
+                                    <p class="current">Current Rate = Rs <span id="current-rate-display">7.50</span> per unit</p>
+                                    
+                                    <div class="form-group">
+                                        <label for="rate">New Rate &nbsp;</label>  
+                                        <input id="rate" name="rate" placeholder="7.50" class="form-control input-sm" required type="number" step="0.01" min="0">
+                                    </div>
+                                    &nbsp;&nbsp;
+                                    <button type="submit" class="btn btn-primary btn-sm" id="btn-update-rate">Update</button>
+                                </fieldset>
+                            </form>
+
+                            <hr>
+
+                            <!-- Live preview of added bills -->
+                            <p class="text-center" style="font-size: 16px; font-weight: bold;">Recently Generated Bills</p>
+                            <table class="table table-striped" id="bills-table">
+                                <thead>
+                                    <tr>
+                                        <th>Customer ID</th>
+                                        <th>Month/Year</th>
+                                        <th>Consumption</th>
+                                        <th>Total Amount</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1029384756</td>
+                                        <td>June 2026</td>
+                                        <td>193 Units (1200 - 1393)</td>
+                                        <td>Rs 1447.50</td>
+                                        <td><span class="label label-danger">Unpaid</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            var currentRate = 7.50;
+
+            // Handle rate update
+            $('#btn-update-rate').click(function() {
+                var newRate = parseFloat($('#rate').val());
+                if (!isNaN(newRate)) {
+                    currentRate = newRate;
+                    $('#current-rate-display').text(currentRate.toFixed(2));
+                    $('#rate').val('');
+                    
+                    $('#alert-title').text('Success!');
+                    $('#alert-message').text('Tariff rate updated to Rs ' + currentRate.toFixed(2) + ' per unit.');
+                    $('#success-alert').fadeIn().delay(3000).fadeOut();
+                }
+            });
+
+            // Handle bill creation
+            $('#btn-add-bill').click(function() {
+                var custId = $('#customerId').val();
+                var initRead = parseInt($('#initial').val());
+                var finalRead = parseInt($('#final').val());
+                var m = $('#month').val();
+                var y = $('#year').val();
+
+                if (custId.length === 10 && !isNaN(initRead) && !isNaN(finalRead)) {
+                    if (finalRead < initRead) {
+                        alert('Final reading cannot be less than initial reading.');
+                        return;
+                    }
+                    var units = finalRead - initRead;
+                    var amt = units * currentRate;
+
+                    // Append to table
+                    var newRow = '<tr>' +
+                        '<td>' + custId + '</td>' +
+                        '<td>' + m + ' ' + y + '</td>' +
+                        '<td>' + units + ' Units (' + initRead + ' - ' + finalRead + ')</td>' +
+                        '<td>Rs ' + amt.toFixed(2) + '</td>' +
+                        '<td><span class="label label-danger">Unpaid</span></td>' +
+                        '</tr>';
+                    
+                    $('#bills-table tbody').prepend(newRow);
+
+                    // Reset form fields
+                    $('#customerId').val('');
+                    $('#initial').val('');
+                    $('#final').val('');
+
+                    $('#alert-title').text('Success!');
+                    $('#alert-message').text('Bill successfully generated for Customer ID: ' + custId);
+                    $('#success-alert').fadeIn().delay(3000).fadeOut();
+                } else {
+                    alert('Please enter valid inputs. Customer ID must be 10 digits.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>eLECTRA - Member Dashboard</title>
+
+    <!-- Styles -->
+    <link href="css/app.css" rel="stylesheet">
+    <link href="css/common.css" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <nav class="navbar navbar-default navbar-static-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse" aria-expanded="false">
+                        <span class="sr-only">Toggle Navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="index.html">
+                        eLECTRA
+                    </a>
+                </div>
+
+                <div class="collapse navbar-collapse" id="app-navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="#" style="font-weight:bold; color:#337ab7;">Welcome, Vijay Mahes</a></li>
+                        <li><a href="index.html">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Welcome to eLECTRA online billing portal</div>
+
+                        <div class="panel-body">
+                            <p><strong>User details:-</strong></p>
+                            <ul>
+                                <li><strong>Name:</strong> Vijay Mahes</li>
+                                <li><strong>Registered email-id:</strong> vijaymahes9080@gmail.com</li>
+                                <li><strong>Connection Id:</strong> 1029384756</li>
+                                <li><strong>Billing Address:</strong> 123, Power Street, Electra City</li>
+                            </ul>
+
+                            <hr>
+
+                            <div class="text-right" id="payment-box">
+                                <p class="amount" style="font-size: 16px;">
+                                    You Have a pending Bill Amount of <br>
+                                    <span style="font-size: 28px; color: #d9534f; font-weight: bold;" id="pending-amount">Rs 1450.00</span>
+                                </p>
+                                
+                                <div class="form-group text-left" style="display:inline-block; margin-right:15px;">
+                                    <label class="control-label" style="display:block;">Select Method</label>
+                                    <label class="radio-inline"><input name="radios" value="1" checked type="radio"> Credit Card</label>
+                                    <label class="radio-inline"><input name="radios" value="2" type="radio"> Debit Card</label>
+                                    <label class="radio-inline"><input name="radios" value="3" type="radio"> Net Banking</label>
+                                </div>
+                                <br>
+                                <button type="button" class="btn btn-warning" id="btn-pay">PAY NOW</button>
+                            </div>
+
+                            <div class="alert alert-success" id="payment-success" style="display: none; margin-top: 15px;">
+                                <strong>Success!</strong> Your payment has been processed. Pending Bill Amount is now Rs 0.00.
+                            </div>
+
+                            <hr>
+
+                            <p class="pastBills text-center" style="font-size: 18px; font-weight: bold; margin-bottom: 15px;">Issued Bills</p>
+                            <table class="table table-striped">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th scope="col">Month</th>
+                                        <th scope="col">Year</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr id="bill-row-1">
+                                        <td>June</td>
+                                        <td>2026</td>
+                                        <td><span class="label label-danger" id="bill-status-1">Unpaid</span></td>
+                                        <td>Rs 1450.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td>May</td>
+                                        <td>2026</td>
+                                        <td><span class="label label-success">Paid</span></td>
+                                        <td>Rs 1230.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td>April</td>
+                                        <td>2026</td>
+                                        <td><span class="label label-success">Paid</span></td>
+                                        <td>Rs 980.00</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <hr>
+
+                            <p class="downl text-center" style="font-size: 16px; font-weight: bold;">Download Bills (Mock PDF)</p>
+                            <form class="form-inline text-center" onsubmit="alert('Generating and downloading your bill PDF...'); return false;">
+                                <div class="form-group">
+                                    <label for="month">Month </label>
+                                    <select id="month" name="month" class="form-control">
+                                        <option value="June">June</option>
+                                        <option value="May">May</option>
+                                        <option value="April">April</option>
+                                    </select>
+                                </div>
+                                &nbsp;&nbsp;
+                                <div class="form-group">
+                                    <label for="year">Year </label>
+                                    <select id="year" name="year" class="form-control">
+                                        <option value="2026">2026</option>
+                                    </select>
+                                </div>
+                                &nbsp;&nbsp;
+                                <button type="submit" class="btn btn-danger">Download PDF</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#btn-pay').click(function() {
+                var method = $('input[name="radios"]:checked').val();
+                window.location.href = 'quick.html?method=' + method;
+            });
+
+            // Check if redirecting back after payment
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('paid') === 'true') {
+                $('#pending-amount').text('Rs 0.00').css('color', '#5cb85c');
+                $('#bill-status-1').removeClass('label-danger').addClass('label-success').text('Paid');
+                $('#payment-success').show();
+                $('#btn-pay').prop('disabled', true);
+            }
+        });
+    </script>
+</body>
+</html>
